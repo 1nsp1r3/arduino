@@ -3,7 +3,7 @@
 typedef void (*GapDataCallBack)(String);
 typedef std::map<const char*, GapDataCallBack> GapDataCallBackMap;
 
-const char*        deviceAddressFilter;
+String             deviceAddressFilter;
 BLEScan*           bleScan;
 GapDataCallBackMap gapDataCallBackMap;
 
@@ -27,9 +27,9 @@ GapDataCallBackMap::iterator i3_bleFindGapDataCallBack(const char* Service){
  */
 class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks{
   void onResult(BLEAdvertisedDevice bleAdvertisedDevice){
-    const char* deviceFoundAddress = bleAdvertisedDevice.getAddress().toString().c_str();
+    String deviceFoundAddress = bleAdvertisedDevice.getAddress().toString();
 
-    if (strcmp(deviceFoundAddress, deviceAddressFilter) == 0){ //Focus only on a specific BLE device
+    if (deviceFoundAddress.equalsIgnoreCase(deviceAddressFilter)){ //Focus only on a specific BLE device
       int count = bleAdvertisedDevice.getServiceDataUUIDCount();
       for (int i=0;i<count;i++){
         BLEUUID serviceDataUUID = bleAdvertisedDevice.getServiceDataUUID(i);
@@ -49,7 +49,7 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks{
 /**
  *
  */
-void i3_bleInit(const char* DeviceName, const char* DeviceAddressFilter){
+void i3_bleInit(const char* DeviceName, String DeviceAddressFilter){
   deviceAddressFilter = DeviceAddressFilter;
 
   BLEDevice::init(DeviceName);
