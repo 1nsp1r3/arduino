@@ -5,4 +5,4 @@
 # Sondes
 - PixlJs : `ED:BF:70:51:36:C7` (Simulator)
 - Régis : `3C:84:27:CA:6E:4A`
-- Julien : `?`
+- Julien : `24:58:7C:E1:F6:42`

@@ -2,12 +2,13 @@
 #include <i3_ble.h> //https://github.com/1nsp1r3/arduino-lib/blob/main/i3_ble.h
 #include <i3_hex.h> //https://github.com/1nsp1r3/arduino-lib/blob/main/i3_hex.h
 
-String boshSensorAddress = String("3c:84:27:ca:6e:4a"); //Sonde Régis
-//String boshSensorAddress = String("?"); //Sonde Julien
-//String boshSensorAddress = String("ed:bf:70:51:36:c7"); //PixlJs
+//String boschSensorAddress = String("3c:84:27:ca:6e:4a"); //Sonde Régis
+String boschSensorAddress = String("24:58:7c:e1:f6:42"); //Sonde Julien
+//String boschSensorAddress = String("ed:bf:70:51:36:c7"); //PixlJs
 
 char temperatureText[4] = "";
 char pressureText[4] = "";
+char waitingText[39] = "";
 
 /**
  * 2589 -> 25.89 -> 26
@@ -55,9 +56,11 @@ void setup(void){
 
   i3_lcdInit();
   i3_lcdClear();
-  i3_lcdText(0, 0, WHITE, 1, "Searching sensor...");
 
-  i3_bleInit("LCD", boshSensorAddress);
+  sprintf(waitingText, "Waiting for %s sensor...", boschSensorAddress.c_str());
+  i3_lcdText(0, 0, WHITE, 1, waitingText);
+
+  i3_bleInit("LCD", boschSensorAddress);
   i3_bleAddGapDataCallBack("00001809-0000-1000-8000-00805f9b34fb", onTemperatureData);
   i3_bleAddGapDataCallBack("00002a6d-0000-1000-8000-00805f9b34fb", onPressureData);
 }
